@@ -17,8 +17,8 @@ public class AppInfo {
     private String appPackageName;
     private double appFlow;
     private boolean hasInternetPermission;
-    private boolean wifiConnect;
-    private boolean flowConnect;
+    private boolean wifiCheck;
+    private boolean flowCheck;
 
     public AppInfo(int uid, String appName, Drawable appIcon, String appPackageName, double appFlow, boolean hasInternetPermission) {
         this.uid = uid;
@@ -69,20 +69,20 @@ public class AppInfo {
         this.hasInternetPermission = hasInternetPermission;
     }
 
-    public boolean isWifiConnect() {
-        return wifiConnect;
+    public boolean isWifiCheck() {
+        return wifiCheck;
     }
 
-    public void setWifiConnect(boolean wifiConnect) {
-        this.wifiConnect = wifiConnect;
+    public void setWifiCheck(boolean wifiCheck) {
+        this.wifiCheck = wifiCheck;
     }
 
-    public boolean isFlowConnect() {
-        return flowConnect;
+    public boolean isFlowCheck() {
+        return flowCheck;
     }
 
-    public void setFlowConnect(boolean flowConnect) {
-        this.flowConnect = flowConnect;
+    public void setFlowCheck(boolean flowCheck) {
+        this.flowCheck = flowCheck;
     }
 
     public int getUid() {

@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,13 +41,12 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.FlowViewHolder
     @Override
     public void onBindViewHolder(FlowViewHolder holder, int position) {
         AppInfo appInfo = appInfoList.get(position);
+        holder.setData(appInfo);
         holder.appIcon.setImageDrawable(appInfo.getAppIcon());
         holder.appName.setText(appInfo.getAppName());
         holder.flowNumber.setText(appInfo.getAppFlow() + "M");
-        holder.status.setText(appInfo.isFlowConnect() || appInfo.isWifiConnect() ? "允许" : "拒绝");
-        holder.status.setTextColor(appInfo.isFlowConnect() || appInfo.isWifiConnect()
-                ? holder.status.getResources().getColor(R.color.green)
-                : holder.status.getResources().getColor(R.color.colorAccent));
+        holder.wifiCheckBox.setChecked(appInfo.isWifiCheck());
+        holder.flowCheckBox.setChecked(appInfo.isFlowCheck());
     }
 
     @Override
@@ -61,12 +62,34 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.FlowViewHolder
         TextView appName;
         @Bind(R.id.flow_number_txt)
         TextView flowNumber;
-        @Bind(R.id.status_txt)
-        TextView status;
+        @Bind(R.id.wifi_check_box)
+        CheckBox wifiCheckBox;
+        @Bind(R.id.flow_check_box)
+        CheckBox flowCheckBox;
 
         public FlowViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
+        public void setData(final AppInfo appInfo) {
+            wifiCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (appInfo.isWifiCheck() != isChecked) {
+                        appInfo.setWifiCheck(isChecked);
+                    }
+                }
+            });
+            flowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (appInfo.isFlowCheck() != isChecked) {
+                        appInfo.setFlowCheck(isChecked);
+                    }
+                }
+            });
+        }
+
     }
 }

@@ -12,11 +12,46 @@
         android:elevation="4dp"
         android:title="流量监控" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="55dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/wall_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="14dp"
+            android:gravity="center_vertical"
+            android:text="黑名单模式"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/gprs_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/eth_3g" />
+
+        <ImageView
+            android:id="@+id/wifi_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toStartOf="@+id/gprs_img"
+            android:scaleType="centerInside"
+            android:src="@mipmap/eth_wifi" />
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/flow_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="95dp"
         android:divider="#ffff0000"
         android:dividerHeight="10dp"
         tools:listitem="@layout/item_app_info" />

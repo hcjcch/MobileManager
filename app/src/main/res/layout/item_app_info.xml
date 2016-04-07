@@ -14,25 +14,28 @@
         android:src="@mipmap/ic_launcher" />
 
 
-    <ImageView
-        android:id="@+id/open_img"
+    <LinearLayout
+        android:id="@+id/rel_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="14dp"
-        android:src="@mipmap/drop_down" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/status_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="14dp"
-        android:layout_toLeftOf="@id/open_img"
-        android:text="允许"
-        android:textColor="@color/green"
-        android:textSize="13sp" />
+        <CheckBox
+            android:id="@+id/wifi_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp" />
+
+        <CheckBox
+            android:id="@+id/flow_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp" />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/flow_number_txt"
@@ -40,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
-        android:layout_toLeftOf="@id/status_txt"
+        android:layout_toLeftOf="@id/rel_right"
         tools:text="0M" />
 
     <TextView
