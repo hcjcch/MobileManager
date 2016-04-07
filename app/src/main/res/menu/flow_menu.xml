@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:netguard="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_filter"
+        android:icon="@mipmap/ic_filter_list_white_24dp"
+        android:title="筛选应用"
+        netguard:showAsAction="always|collapseActionView">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_app_flow_number"
+                    android:title="按流量排序" />
+                <item
+                    android:id="@+id/menu_app_name"
+                    android:title="按Name排序" />
+                <item
+                    android:id="@+id/menu_app_uid"
+                    android:title="按uid排序" />
+            </group>
+        </menu>
+    </item>
+</menu>
