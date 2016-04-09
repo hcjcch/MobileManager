@@ -14,4 +14,6 @@ public class Constants {
     public static final String SP_UID_RANGE = "sp_uid_range";
     public static final String SP_APP_NAME_RANGE = "sp_app_name_range";
     public static final String SP_NAME_FLOW = "sp_name_flow";
+    public static final String SP_KEY_WIFI_SELECT_UID = "sp_key_wifi_select_uid";
+    public static final String SP_KEY_FLOW_SELECT_UID = "sp_key_flow_select_uid";
 }

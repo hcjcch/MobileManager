@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:netguard="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_filter"
         android:icon="@mipmap/ic_filter_list_white_24dp"
         android:title="筛选应用"
-        netguard:showAsAction="always|collapseActionView">
+        app:showAsAction="always">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -18,6 +18,19 @@
                     android:id="@+id/menu_app_uid"
                     android:title="按uid排序" />
             </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_list_item"
+        android:icon="@mipmap/ic_core_overflow"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_apply"
+                android:icon="@mipmap/apply"
+                android:title="保存"
+                app:showAsAction="always|withText" />
         </menu>
     </item>
 </menu>

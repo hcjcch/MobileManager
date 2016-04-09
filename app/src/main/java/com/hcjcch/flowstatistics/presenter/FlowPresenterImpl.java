@@ -1,5 +1,7 @@
 package com.hcjcch.flowstatistics.presenter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.MenuItem;
 
 import com.hcjcch.flowstatistics.FlowStatisticsActivity;
@@ -7,8 +9,6 @@ import com.hcjcch.flowstatistics.model.AppInfo;
 import com.hcjcch.flowstatistics.view.FlowView;
 import com.hcjcch.mobilemanager.R;
 import com.hcjcch.util.ApplicationUtil;
-import com.hcjcch.util.Constants;
-import com.hcjcch.util.FlowSharePreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,9 +31,13 @@ public class FlowPresenterImpl implements FlowPresenter {
 
     FlowView flowView;
     List<AppInfo> appInfoList = new ArrayList<>();
+    FireWallPresenter fireWallPresenter;
+    Context context;
 
     public FlowPresenterImpl(FlowView flowView) {
         this.flowView = flowView;
+        context = (Activity) flowView;
+        fireWallPresenter = new FireWallPresenterImpl();
     }
 
 
@@ -101,6 +105,9 @@ public class FlowPresenterImpl implements FlowPresenter {
                     }
                 });
                 flowView.filterRecyclerViewData(appInfoList);
+                break;
+            case R.id.menu_apply:
+                fireWallPresenter.saveRule(context, appInfoList);
                 break;
         }
         return true;

@@ -25,4 +25,16 @@ public class FlowSharePreferenceHelper {
         editor.putBoolean(key, value);
         editor.apply();
     }
+
+    public static void saveString(String key, String value) {
+        SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getString(String key, String value) {
+        SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, value);
+    }
 }
