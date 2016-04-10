@@ -101,7 +101,7 @@ public class FlowPresenterImpl implements FlowPresenter {
                 Collections.sort(appInfoList, new Comparator<AppInfo>() {
                     @Override
                     public int compare(AppInfo lhs, AppInfo rhs) {
-                        return lhs.getAppName().compareTo(rhs.getAppName());
+                        return lhs.getName().compareTo(rhs.getName());
                     }
                 });
                 flowView.filterRecyclerViewData(appInfoList);

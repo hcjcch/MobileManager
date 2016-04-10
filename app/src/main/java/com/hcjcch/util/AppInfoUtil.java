@@ -1,10 +1,13 @@
 package com.hcjcch.util;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
+import android.util.SparseArray;
 
 import com.hcjcch.flowstatistics.model.AppInfo;
 
@@ -37,40 +40,44 @@ public class AppInfoUtil {
         return Observable.create(new Observable.OnSubscribe<List<AppInfo>>() {
             @Override
             public void call(Subscriber<? super List<AppInfo>> subscriber) {
-                List<AppInfo> appInfo = new ArrayList<>();
-                //获取所有的安装在手机上的应用软件的信息，并且获取这些软件里面的权限信息
-                PackageManager pm = context.getPackageManager();//获取系统应用包管理
-                //获取每个包内的manifest.xml信息，它的权限等等
-                List<PackageInfo> packageInfoList = pm.getInstalledPackages
-                        (PackageManager.GET_PERMISSIONS);
-                //遍历每个应用包信息
-                for (PackageInfo info : packageInfoList) {
-                    Drawable appIcon = info.applicationInfo.loadIcon(context.getPackageManager());
-                    String appName = String.valueOf(info.applicationInfo.loadLabel(context.getPackageManager()));
+                List<AppInfo> appInfoList;
+                PackageManager pm = context.getPackageManager();
+                List<ApplicationInfo> installed = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+                SparseArray<AppInfo> syncMap = new SparseArray<>();
+                AppInfo appInfo;
+                for (ApplicationInfo info : installed) {
+                    appInfo = syncMap.get(info.uid);
+                    Drawable appIcon = info.loadIcon(context.getPackageManager());
+                    String appName = String.valueOf(info.loadLabel(context.getPackageManager()));
                     String packageName = info.packageName;
                     double flow = 0;
                     boolean hasInternetPermission = false;
-                    int uId = info.applicationInfo.uid;
-                    String[] permissions = info.requestedPermissions;
-                    if (permissions != null && permissions.length > 0) {
-                        //找出需要网络服务的应用程序
-                        for (String permission : permissions) {
-                            if (PERMISSION_INTERNET.equals(permission)) {
-                                hasInternetPermission = true;
-                                //获取每个应用程序在操作系统内的进程id
-                                //如果返回-1，代表不支持使用该方法，注意必须是2.2以上的
-                                long rx = TrafficStats.getUidRxBytes(uId);
-                                //如果返回-1，代表不支持使用该方法，注意必须是2.2以上的
-                                long tx = TrafficStats.getUidTxBytes(uId);
-                                if (rx > 0 && tx > 0) {
-                                    flow = (rx + tx) / 1024 / 1024;
-                                }
-                            }
+                    int uId = info.uid;
+                    if (PackageManager.PERMISSION_GRANTED == pm.checkPermission(Manifest.permission.INTERNET, info.packageName)) {
+                        hasInternetPermission = true;
+                        //获取每个应用程序在操作系统内的进程id
+                        //如果返回-1，代表不支持使用该方法，注意必须是2.2以上的
+                        long rx = TrafficStats.getUidRxBytes(uId);
+                        //如果返回-1，代表不支持使用该方法，注意必须是2.2以上的
+                        long tx = TrafficStats.getUidTxBytes(uId);
+                        if (rx > 0 && tx > 0) {
+                            flow = (rx + tx) / 1024 / 1024;
                         }
                     }
-                    appInfo.add(new AppInfo(uId, appName, appIcon, packageName, flow, hasInternetPermission));
+                    if (appInfo != null) {
+                        appInfo.getAppName().add(appName);
+                    } else {
+                        ArrayList<String> appNameList = new ArrayList<>();
+                        appNameList.add(appName);
+                        appInfo = new AppInfo(uId, appNameList, appIcon, packageName, flow, hasInternetPermission);
+                    }
+                    syncMap.put(info.uid, appInfo);
                 }
-                subscriber.onNext(appInfo);
+                appInfoList = Collections.synchronizedList(new ArrayList<AppInfo>());
+                for (int i = 0; i < syncMap.size(); i++) {
+                    appInfoList.add(syncMap.valueAt(i));
+                }
+                subscriber.onNext(appInfoList);
                 subscriber.onCompleted();
             }
         }).subscribeOn(Schedulers.io());
@@ -98,7 +105,7 @@ public class AppInfoUtil {
                         }
                         if (Collections.binarySearch(wifiUidList, appInfo.getUid()) >= 0) {
                             appInfo.setWifiCheck(true);
-                        }else {
+                        } else {
                             appInfo.setWifiCheck(false);
                         }
                     }
@@ -113,7 +120,6 @@ public class AppInfoUtil {
                     public void call(List<AppInfo> appInfoList, AppInfo appInfo) {
                         if (appInfo.isHasInternetPermission()) {
                             appInfoList.add(appInfo);
-
                         }
                     }
                 });

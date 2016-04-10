@@ -43,7 +43,7 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.FlowViewHolder
         AppInfo appInfo = appInfoList.get(position);
         holder.setData(appInfo);
         holder.appIcon.setImageDrawable(appInfo.getAppIcon());
-        holder.appName.setText(appInfo.getAppName());
+        holder.appName.setText(appInfo.getName());
         holder.flowNumber.setText(appInfo.getAppFlow() + "M");
         holder.wifiCheckBox.setChecked(appInfo.isWifiCheck());
         holder.flowCheckBox.setChecked(appInfo.isFlowCheck());
