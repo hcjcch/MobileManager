@@ -9,10 +9,15 @@ import android.net.TrafficStats;
 import com.hcjcch.flowstatistics.model.AppInfo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Action2;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -25,7 +30,7 @@ import rx.schedulers.Schedulers;
  * @time 16/2/21 10:28
  */
 
-public class ApplicationUtil {
+public class AppInfoUtil {
     public static final String PERMISSION_INTERNET = "android.permission.INTERNET";
 
     public static Observable<List<AppInfo>> getAllApplication(final Context context) {
@@ -72,18 +77,63 @@ public class ApplicationUtil {
     }
 
     public static Observable<List<AppInfo>> getTrafficStatsApplication(Context context) {
+        String flowUidString = FlowSharePreferenceHelper.getString(Constants.SP_KEY_FLOW_SELECT_UID, "");
+        String wifiUidString = FlowSharePreferenceHelper.getString(Constants.SP_KEY_WIFI_SELECT_UID, "");
+        final List<Integer> flowUidList = getUidListFromPref(flowUidString);
+        final List<Integer> wifiUidList = getUidListFromPref(wifiUidString);
         return getAllApplication(context)
-                .map(new Func1<List<AppInfo>, List<AppInfo>>() {
+                .flatMap(new Func1<List<AppInfo>, Observable<AppInfo>>() {
                     @Override
-                    public List<AppInfo> call(List<AppInfo> appInfoList) {
-                        List<AppInfo> appInformationList = new ArrayList<>();
-                        for (AppInfo appInfo : appInfoList) {
-                            if (appInfo.isHasInternetPermission()) {
-                                appInformationList.add(appInfo);
-                            }
+                    public Observable<AppInfo> call(List<AppInfo> appInfoList) {
+                        return Observable.from(appInfoList);
+                    }
+                })
+                .doOnNext(new Action1<AppInfo>() {
+                    @Override
+                    public void call(AppInfo appInfo) {
+                        if (Collections.binarySearch(flowUidList, appInfo.getUid()) >= 0) {
+                            appInfo.setFlowCheck(true);
+                        } else {
+                            appInfo.setFlowCheck(false);
                         }
-                        return appInformationList;
+                        if (Collections.binarySearch(wifiUidList, appInfo.getUid()) >= 0) {
+                            appInfo.setWifiCheck(true);
+                        }else {
+                            appInfo.setWifiCheck(false);
+                        }
+                    }
+                })
+                .collect(new Func0<List<AppInfo>>() {
+                    @Override
+                    public List<AppInfo> call() {
+                        return new ArrayList<>();
+                    }
+                }, new Action2<List<AppInfo>, AppInfo>() {
+                    @Override
+                    public void call(List<AppInfo> appInfoList, AppInfo appInfo) {
+                        if (appInfo.isHasInternetPermission()) {
+                            appInfoList.add(appInfo);
+
+                        }
                     }
                 });
+    }
+
+    public static List<Integer> getUidListFromPref(String savedPkg_uid) {
+        StringTokenizer tok = new StringTokenizer(savedPkg_uid, "|");
+        List<Integer> uidList = new ArrayList<>();
+        while (tok.hasMoreTokens()) {
+            String uid = tok.nextToken();
+            if (!uid.equals("")) {
+                try {
+                    uidList.add(Integer.parseInt(uid));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        // Sort the array to allow using "Arrays.binarySearch" later
+        Collections.sort(uidList);
+        return uidList;
     }
 }

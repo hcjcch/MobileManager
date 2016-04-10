@@ -14,7 +14,7 @@ public class TrafficStatsUtilTest {
 
     @Test
     public void testA() throws Exception {
-        ApplicationUtil trafficStatsUtil = new ApplicationUtil();
+        AppInfoUtil trafficStatsUtil = new AppInfoUtil();
         System.out.println(2);
     }
 }

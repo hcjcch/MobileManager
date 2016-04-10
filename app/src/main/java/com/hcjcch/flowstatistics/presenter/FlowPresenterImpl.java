@@ -8,7 +8,7 @@ import com.hcjcch.flowstatistics.FlowStatisticsActivity;
 import com.hcjcch.flowstatistics.model.AppInfo;
 import com.hcjcch.flowstatistics.view.FlowView;
 import com.hcjcch.mobilemanager.R;
-import com.hcjcch.util.ApplicationUtil;
+import com.hcjcch.util.AppInfoUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class FlowPresenterImpl implements FlowPresenter {
     public void onCreate() {
         flowView.setTitle();
         flowView.initRecyclerView();
-        ApplicationUtil
+        AppInfoUtil
                 .getTrafficStatsApplication(((FlowStatisticsActivity) flowView))
                 .doOnSubscribe(new Action0() {
                     @Override
