@@ -2,6 +2,7 @@ package com.hcjcch.flowstatistics.presenter;
 
 import android.content.Context;
 
+import com.hcjcch.flowstatistics.flowutil.Api;
 import com.hcjcch.flowstatistics.model.AppInfo;
 import com.hcjcch.util.Constants;
 import com.hcjcch.util.FlowSharePreferenceHelper;
@@ -85,6 +86,11 @@ public class FireWallPresenterImpl implements FireWallPresenter {
                         FlowSharePreferenceHelper.saveString(Constants.SP_KEY_WIFI_SELECT_UID, map.get(Constants.SP_KEY_WIFI_SELECT_UID).toString());
                     }
                 });
+    }
+
+    @Override
+    public void applySavedIpTablesRules(Context context) {
+        Api.applySavedIpTablesRules(context);
     }
 
 }

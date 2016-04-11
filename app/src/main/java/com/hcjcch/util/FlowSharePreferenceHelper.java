@@ -37,4 +37,16 @@ public class FlowSharePreferenceHelper {
         SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
         return sharedPreferences.getString(key, value);
     }
+
+    public static void saveInt(String key, int value) {
+        SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    public static int getInt(String key) {
+        SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(key, -1);
+    }
 }

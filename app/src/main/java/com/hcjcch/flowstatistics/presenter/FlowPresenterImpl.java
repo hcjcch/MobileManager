@@ -5,8 +5,11 @@ import android.content.Context;
 import android.view.MenuItem;
 
 import com.hcjcch.flowstatistics.FlowStatisticsActivity;
+import com.hcjcch.flowstatistics.flowutil.Api;
+import com.hcjcch.flowstatistics.flowutil.G;
 import com.hcjcch.flowstatistics.model.AppInfo;
 import com.hcjcch.flowstatistics.view.FlowView;
+import com.hcjcch.mobilemanager.MApplication;
 import com.hcjcch.mobilemanager.R;
 import com.hcjcch.util.AppInfoUtil;
 
@@ -108,6 +111,14 @@ public class FlowPresenterImpl implements FlowPresenter {
                 break;
             case R.id.menu_apply:
                 fireWallPresenter.saveRule(context, appInfoList);
+                break;
+            case R.id.menu_toggle:
+                if (G.fireWallEnable()) {
+                    //关闭防火墙
+                } else {
+                    //打开防火墙
+                    Api.applySavedIpTablesRules(MApplication.getContext());
+                }
                 break;
         }
         return true;

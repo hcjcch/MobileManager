@@ -16,4 +16,6 @@ public class Constants {
     public static final String SP_NAME_FLOW = "sp_name_flow";
     public static final String SP_KEY_WIFI_SELECT_UID = "sp_key_wifi_select_uid";
     public static final String SP_KEY_FLOW_SELECT_UID = "sp_key_flow_select_uid";
+    public static final String SP_KEY_APP_VERSION = "sp_key_app_version";
+    public static final String SP_KEY_FIRE_WALL_ENABLE = "sp_key_fire_wall_enable";
 }

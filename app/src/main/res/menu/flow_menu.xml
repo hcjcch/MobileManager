@@ -27,6 +27,11 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/menu_toggle"
+                android:icon="@mipmap/fire_wall_enable"
+                app:showAsAction="always|withText"
+                android:title=""/>
+            <item
                 android:id="@+id/menu_apply"
                 android:icon="@mipmap/apply"
                 android:title="保存"

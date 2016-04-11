@@ -16,4 +16,5 @@ import java.util.List;
 
 public interface FireWallPresenter {
     void saveRule(Context context, List<AppInfo> appInfoList);
+    void applySavedIpTablesRules(Context context);
 }

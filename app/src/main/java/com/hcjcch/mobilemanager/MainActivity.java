@@ -3,9 +3,11 @@ package com.hcjcch.mobilemanager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Button;
 
 import com.hcjcch.flowstatistics.FlowStatisticsActivity;
+import com.hcjcch.flowstatistics.flowutil.Api;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +32,8 @@ public class MainActivity extends BaseActivity {
         network.setTypeface(typeface);
         applicationManager.setTypeface(typeface);
         garbage.setTypeface(typeface);
+        Log.d("huangchen", this.getDir("bin", 0).getAbsolutePath());
+        Log.d("huangchen", Api.scriptHeader(this));
     }
 
     @OnClick(R.id.network)
