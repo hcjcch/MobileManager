@@ -16,4 +16,5 @@ public interface FlowPresenter {
 
     boolean menuItemSelected(MenuItem item);
 
+    void selectFireMode(int which,String modeText);
 }

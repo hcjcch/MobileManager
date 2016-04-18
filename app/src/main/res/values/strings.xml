@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MobileManager</string>
+    <array name="fire_wall_mode">
+        <item >白名单模式</item>
+        <item >黑名单模式</item>
+    </array>
 </resources>

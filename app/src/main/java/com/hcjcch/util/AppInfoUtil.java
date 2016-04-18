@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.util.SparseArray;
 
+import com.hcjcch.flowstatistics.flowutil.Api;
 import com.hcjcch.flowstatistics.model.AppInfo;
 
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ public class AppInfoUtil {
         return Observable.create(new Observable.OnSubscribe<List<AppInfo>>() {
             @Override
             public void call(Subscriber<? super List<AppInfo>> subscriber) {
+                String flowUidString = FlowSharePreferenceHelper.getString(Constants.SP_KEY_FLOW_SELECT_UID, "");
+                String wifiUidString = FlowSharePreferenceHelper.getString(Constants.SP_KEY_WIFI_SELECT_UID, "");
+                final List<Integer> flowUidList = getUidListFromPref(flowUidString);
+                final List<Integer> wifiUidList = getUidListFromPref(wifiUidString);
                 List<AppInfo> appInfoList;
                 PackageManager pm = context.getPackageManager();
                 List<ApplicationInfo> installed = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -67,11 +72,31 @@ public class AppInfoUtil {
                     if (appInfo != null) {
                         appInfo.getAppName().add(appName);
                     } else {
-                        ArrayList<String> appNameList = new ArrayList<>();
-                        appNameList.add(appName);
-                        appInfo = new AppInfo(uId, appNameList, appIcon, packageName, flow, hasInternetPermission);
+                        appInfo = new AppInfo(uId, appName, appIcon, packageName, flow, hasInternetPermission);
                     }
                     syncMap.put(info.uid, appInfo);
+                }
+                AppInfo app;
+                AppInfo special[] = {
+                        new AppInfo(Api.SPECIAL_UID_ANY, "(Any application) - Same as selecting all applications", false, false),
+                        new AppInfo(Api.SPECIAL_UID_KERNEL, "(Kernel) - Linux kernel", false, false),
+                        new AppInfo(android.os.Process.getUidForName("root"), "(root) - Applications running as root", false, false),
+                        new AppInfo(android.os.Process.getUidForName("media"), "Media server", false, false),
+                        new AppInfo(android.os.Process.getUidForName("vpn"), "VPN networking", false, false),
+                        new AppInfo(android.os.Process.getUidForName("shell"), "Linux shell", false, false),
+                };
+                for (AppInfo aSpecial : special) {
+                    app = aSpecial;
+                    if (app.getUid() != -1 && syncMap.get(app.getUid()) == null) {
+                        // check if this application is allowed
+                        if (Collections.binarySearch(wifiUidList, app.getUid()) >= 0) {
+                            app.setWifiCheck(true);
+                        }
+                        if (Collections.binarySearch(flowUidList, app.getUid()) >= 0) {
+                            app.setFlowCheck(true);
+                        }
+                        syncMap.put(app.getUid(), app);
+                    }
                 }
                 appInfoList = Collections.synchronizedList(new ArrayList<AppInfo>());
                 for (int i = 0; i < syncMap.size(); i++) {
@@ -142,4 +167,5 @@ public class AppInfoUtil {
         Collections.sort(uidList);
         return uidList;
     }
+
 }

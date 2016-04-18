@@ -10,8 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hcjcch.flowstatistics.adapter.FlowAdapter;
+import com.hcjcch.flowstatistics.flowutil.G;
 import com.hcjcch.flowstatistics.model.AppInfo;
 import com.hcjcch.flowstatistics.presenter.FlowPresenter;
 import com.hcjcch.flowstatistics.presenter.FlowPresenterImpl;
@@ -23,6 +26,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Description:
@@ -44,8 +48,12 @@ public class FlowStatisticsActivity extends BaseActivity implements FlowView {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.wall_type)
+    TextView callType;
+
     MenuItem flowMenuItem;
     MenuItem uidMenuItem;
+    MenuItem toggleMenuItem;
 
     FlowAdapter flowAdapter;
 
@@ -92,6 +100,35 @@ public class FlowStatisticsActivity extends BaseActivity implements FlowView {
     }
 
     @Override
+    public void showFireWallModeSelect() {
+        new MaterialDialog.Builder(this)
+                .title("选择防火墙模式")
+                .items(R.array.fire_wall_mode)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        flowPresenter.selectFireMode(which, text.toString());
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void refreshFireModeHeader(String headerString) {
+        callType.setText(headerString);
+    }
+
+    @Override
+    public void setFireWallModeOpenText() {
+        toggleMenuItem.setTitle("打开防火墙");
+    }
+
+    @Override
+    public void setFireWallModeCloseText() {
+        toggleMenuItem.setTitle("关闭防火墙");
+    }
+
+    @Override
     public void setTitle() {
         setTitle("流量统计");
     }
@@ -112,6 +149,12 @@ public class FlowStatisticsActivity extends BaseActivity implements FlowView {
     public boolean onPrepareOptionsMenu(Menu menu) {
         flowMenuItem = menu.findItem(R.id.menu_app_flow_number);
         uidMenuItem = menu.findItem(R.id.menu_app_uid);
+        toggleMenuItem = menu.findItem(R.id.menu_toggle);
+        if (G.fireWallEnable()) {
+            setFireWallModeCloseText();
+        } else {
+            setFireWallModeOpenText();
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -119,4 +162,11 @@ public class FlowStatisticsActivity extends BaseActivity implements FlowView {
     protected void toolbarNavigationClick(View v) {
         finish();
     }
+
+    @OnClick(R.id.wall_type)
+    void selectFireWallMode() {
+        showFireWallModeSelect();
+    }
+
+
 }

@@ -28,4 +28,12 @@ public interface FlowView extends TitleView {
 
     void filterRecyclerViewData(List<AppInfo> appInfoList);
 
+    void showFireWallModeSelect();
+
+    void refreshFireModeHeader(String headerString);
+
+    void setFireWallModeOpenText();
+
+    void setFireWallModeCloseText();
+
 }

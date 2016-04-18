@@ -2,6 +2,7 @@ package com.hcjcch.flowstatistics.model;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 public class AppInfo {
     private int uid;
     private Drawable appIcon;
-    private List<String> appName;
+    private List<String> appName = new ArrayList<>();
     private String appPackageName;
     private double appFlow;
     private boolean hasInternetPermission;
@@ -26,13 +27,21 @@ public class AppInfo {
 
     }
 
-    public AppInfo(int uid, List<String> appName, Drawable appIcon, String appPackageName, double appFlow, boolean hasInternetPermission) {
+    public AppInfo(int uid, String appName, Drawable appIcon, String appPackageName, double appFlow, boolean hasInternetPermission) {
         this.uid = uid;
-        this.appName = appName;
+        this.appName.add(appName);
         this.appIcon = appIcon;
         this.appPackageName = appPackageName;
         this.appFlow = appFlow;
         this.hasInternetPermission = hasInternetPermission;
+    }
+
+    public AppInfo(int uid, String appName, boolean wifiCheck, boolean flowCheck) {
+        this.uid = uid;
+        this.appName.add(appName);
+        this.wifiCheck = wifiCheck;
+        this.flowCheck = flowCheck;
+        this.hasInternetPermission = true;
     }
 
     public Drawable getAppIcon() {

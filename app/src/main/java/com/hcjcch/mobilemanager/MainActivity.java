@@ -34,6 +34,13 @@ public class MainActivity extends BaseActivity {
         garbage.setTypeface(typeface);
         Log.d("huangchen", this.getDir("bin", 0).getAbsolutePath());
         Log.d("huangchen", Api.scriptHeader(this));
+        Api.runScript(this, Api.scriptHeader(this), new StringBuilder(), 3000, true);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Api.showIpTableRules(this);
     }
 
     @OnClick(R.id.network)

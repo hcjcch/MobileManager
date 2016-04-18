@@ -2,6 +2,7 @@ package com.hcjcch.flowstatistics.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.hcjcch.flowstatistics.FlowStatisticsActivity;
@@ -9,9 +10,10 @@ import com.hcjcch.flowstatistics.flowutil.Api;
 import com.hcjcch.flowstatistics.flowutil.G;
 import com.hcjcch.flowstatistics.model.AppInfo;
 import com.hcjcch.flowstatistics.view.FlowView;
-import com.hcjcch.mobilemanager.MApplication;
 import com.hcjcch.mobilemanager.R;
 import com.hcjcch.util.AppInfoUtil;
+import com.hcjcch.util.Constants;
+import com.hcjcch.util.FlowSharePreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,14 +117,31 @@ public class FlowPresenterImpl implements FlowPresenter {
             case R.id.menu_toggle:
                 if (G.fireWallEnable()) {
                     //关闭防火墙
+                    flowView.setFireWallModeOpenText();
+                    boolean purgeSuccess = Api.purgeIpTables(context, true);
+                    if (purgeSuccess) {
+                        Log.d("huangchen", "success");
+                        G.setFireWallEnable(false);
+                    }
                 } else {
                     //打开防火墙
-                    Api.applySavedIpTablesRules(MApplication.getContext());
+                    flowView.setFireWallModeCloseText();
+                    boolean applySuccess = Api.applySavedIpTablesRules(context);
+                    if (applySuccess) {
+                        Log.d("huangchen", "success");
+                        G.setFireWallEnable(true);
+                    }
                 }
                 break;
         }
         return true;
     }
 
+    @Override
+    public void selectFireMode(int which, String modeText) {
+        final String mode = (which == 0 ? Api.MODE_WHITE_LIST : Api.MODE_BLACK_LIST);
+        FlowSharePreferenceHelper.saveString(Constants.SP_KEY_FIRE_WALL_MODE, mode);
+        flowView.refreshFireModeHeader(modeText);
+    }
 
 }
