@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/select_filter"
+        android:icon="@mipmap/ic_filter_tilt_shift_white_24dp"
+        android:title="已选择"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/menu_filter"
-        android:icon="@mipmap/ic_filter_list_white_24dp"
+        android:icon="@mipmap/ic_sort_white_24dp"
         android:title="筛选应用"
         app:showAsAction="always">
         <menu>

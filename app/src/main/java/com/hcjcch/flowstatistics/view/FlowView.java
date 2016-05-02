@@ -36,4 +36,6 @@ public interface FlowView extends TitleView {
 
     void setFireWallModeCloseText();
 
+    void notifyChanged();
+
 }

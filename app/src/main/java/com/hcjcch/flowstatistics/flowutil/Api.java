@@ -222,16 +222,16 @@ public class Api {
         String abi = Build.CPU_ABI;
         boolean ret;
         if (abi.startsWith("x86")) {
-            ret = installBinary(ctx, R.raw.busybox_x86, "busybox") &&
+            ret = installBinary(ctx, R.raw.busybox_x86, "busybox_arm") &&
                     installBinary(ctx, R.raw.iptables_x86, "iptables") &&
                     installBinary(ctx, R.raw.ip6tables_x86, "ip6tables");
         } else if (abi.startsWith("mips")) {
-            ret = installBinary(ctx, R.raw.busybox_mips, "busybox") &&
+            ret = installBinary(ctx, R.raw.busybox_mips, "busybox_arm") &&
                     installBinary(ctx, R.raw.iptables_mips, "iptables") &&
                     installBinary(ctx, R.raw.ip6tables_mips, "ip6tables");
         } else {
             // default to ARM
-            ret = installBinary(ctx, R.raw.busybox_arm, "busybox") &&
+            ret = installBinary(ctx, R.raw.busybox_arm, "busybox_arm") &&
                     installBinary(ctx, R.raw.iptables_arm, "iptables") &&
                     installBinary(ctx, R.raw.ip6tables_arm, "ip6tables");
         }
@@ -275,18 +275,18 @@ public class Api {
         return ""
                 + "IPTABLES=iptables\n"
                 + "IP6TABLES=ip6tables\n"
-                + "BUSYBOX=busybox\n"
+                + "BUSYBOX=busybox_arm\n"
                 + "GREP=grep\n"
                 + "ECHO=echo\n"
-                + "# Try to find busybox\n" + "if "
+                + "# Try to find busybox_arm\n" + "if "
                 + dir
-                + "/busybox --help >/dev/null 2>/dev/null ; then\n"
+                + "/busybox_arm --help >/dev/null 2>/dev/null ; then\n"
                 + "	BUSYBOX="
                 + dir
-                + "/busybox\n"
+                + "/busybox_arm\n"
                 + "	GREP=\"$BUSYBOX grep\"\n"
-                + "elif busybox --help >/dev/null 2>/dev/null ; then\n"
-                + "	BUSYBOX=busybox\n"
+                + "elif busybox_arm --help >/dev/null 2>/dev/null ; then\n"
+                + "	BUSYBOX=busybox_arm\n"
                 + "fi\n"
                 + "# Try to find iptables\n"
                 + "if "

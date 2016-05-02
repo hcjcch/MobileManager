@@ -2,6 +2,7 @@ package com.hcjcch.flowstatistics.model;
 
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @time 16/4/2 23:25
  */
 
-public class AppInfo {
+public class AppInfo implements Serializable {
     private int uid;
     private Drawable appIcon;
     private List<String> appName = new ArrayList<>();
@@ -42,6 +43,13 @@ public class AppInfo {
         this.wifiCheck = wifiCheck;
         this.flowCheck = flowCheck;
         this.hasInternetPermission = true;
+    }
+
+    public AppInfo(int uid, Drawable appIcon, String appName, String appPackageName) {
+        this.uid = uid;
+        this.appIcon = appIcon;
+        this.appName.add(appName);
+        this.appPackageName = appPackageName;
     }
 
     public Drawable getAppIcon() {

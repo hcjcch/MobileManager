@@ -12,6 +12,7 @@ import android.util.SparseArray;
 import com.hcjcch.flowstatistics.flowutil.Api;
 import com.hcjcch.flowstatistics.model.AppInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -108,6 +109,41 @@ public class AppInfoUtil {
         }).subscribeOn(Schedulers.io());
     }
 
+    public static Observable<List<AppInfo>> getAllNoSystemInstalledApp(final Context context) {
+        return Observable.create(new Observable.OnSubscribe<List<AppInfo>>() {
+            @Override
+            public void call(Subscriber<? super List<AppInfo>> subscriber) {
+                List<AppInfo> appInfoList;
+                PackageManager pm = context.getPackageManager();
+                List<ApplicationInfo> installed = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+                SparseArray<AppInfo> syncMap = new SparseArray<>();
+                AppInfo appInfo;
+                File file;
+                for (ApplicationInfo info : installed) {
+                    String packageName = info.packageName;
+                    if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                        appInfo = syncMap.get(info.uid);
+                        Drawable appIcon = info.loadIcon(context.getPackageManager());
+                        String appName = String.valueOf(info.loadLabel(context.getPackageManager()));
+                        int uId = info.uid;
+                        if (appInfo != null) {
+                            appInfo.getAppName().add(appName);
+                        } else {
+                            appInfo = new AppInfo(uId, appIcon, appName, packageName);
+                        }
+                        syncMap.put(info.uid, appInfo);
+                    }
+                }
+                appInfoList = Collections.synchronizedList(new ArrayList<AppInfo>());
+                for (int i = 0; i < syncMap.size(); i++) {
+                    appInfoList.add(syncMap.valueAt(i));
+                }
+                subscriber.onNext(appInfoList);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
     public static Observable<List<AppInfo>> getTrafficStatsApplication(Context context) {
         String flowUidString = FlowSharePreferenceHelper.getString(Constants.SP_KEY_FLOW_SELECT_UID, "");
         String wifiUidString = FlowSharePreferenceHelper.getString(Constants.SP_KEY_WIFI_SELECT_UID, "");
@@ -168,4 +204,52 @@ public class AppInfoUtil {
         return uidList;
     }
 
+    public static void filterSelectAppInfo(List<AppInfo> allAppInfoList, List<AppInfo> appInfoList, boolean isSelectFilter) {
+        appInfoList.clear();
+        for (AppInfo appInfo : allAppInfoList) {
+            if (isSelectFilter) {
+                if ((appInfo.isFlowCheck() || appInfo.isWifiCheck())) {
+                    appInfoList.add(appInfo);
+                }
+            } else {
+                appInfoList.add(appInfo);
+            }
+        }
+    }
+
+    public static Observable<AppInfo> getAppInfoByPackageName(final Context context, final String packageName) {
+        return Observable
+                .create(new Observable.OnSubscribe<AppInfo>() {
+                    @Override
+                    public void call(Subscriber<? super AppInfo> subscriber) {
+                        PackageManager pm = context.getPackageManager();
+                        try {
+                            ApplicationInfo info = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+                            Drawable appIcon = info.loadIcon(context.getPackageManager());
+                            String appName = String.valueOf(info.loadLabel(context.getPackageManager()));
+                            double flow = 0;
+                            boolean hasInternetPermission = false;
+                            int uId = info.uid;
+                            if (PackageManager.PERMISSION_GRANTED == pm.checkPermission(Manifest.permission.INTERNET, info.packageName)) {
+                                hasInternetPermission = true;
+                                //获取每个应用程序在操作系统内的进程id
+                                //如果返回-1，代表不支持使用该方法，注意必须是2.2以上的
+                                long rx = TrafficStats.getUidRxBytes(uId);
+                                //如果返回-1，代表不支持使用该方法，注意必须是2.2以上的
+                                long tx = TrafficStats.getUidTxBytes(uId);
+                                if (rx > 0 && tx > 0) {
+                                    flow = (rx + tx) / 1024 / 1024;
+                                }
+                            }
+                            AppInfo appInfo = new AppInfo(uId, appName, appIcon, packageName, flow, hasInternetPermission);
+                            subscriber.onNext(appInfo);
+                            subscriber.onCompleted();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                            subscriber.onError(e);
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io());
+    }
 }

@@ -34,6 +34,8 @@ import rx.functions.Action0;
 
 public class FlowPresenterImpl implements FlowPresenter {
 
+    private List<AppInfo> allAppInfoList = new ArrayList<>();
+    private boolean isSelectFilter = false;
     FlowView flowView;
     List<AppInfo> appInfoList = new ArrayList<>();
     FireWallPresenter fireWallPresenter;
@@ -74,8 +76,11 @@ public class FlowPresenterImpl implements FlowPresenter {
 
                     @Override
                     public void onNext(List<AppInfo> appInfoList) {
-                        FlowPresenterImpl.this.appInfoList = appInfoList;
-                        flowView.setRecyclerViewData(appInfoList);
+                        FlowPresenterImpl.this.allAppInfoList = appInfoList;
+                        for (AppInfo appInfo : allAppInfoList) {
+                            FlowPresenterImpl.this.appInfoList.add(appInfo);
+                        }
+                        flowView.setRecyclerViewData(FlowPresenterImpl.this.appInfoList);
                     }
                 });
     }
@@ -133,6 +138,11 @@ public class FlowPresenterImpl implements FlowPresenter {
                     }
                 }
                 break;
+            case R.id.select_filter:
+                isSelectFilter = !isSelectFilter;
+                AppInfoUtil.filterSelectAppInfo(allAppInfoList, appInfoList, isSelectFilter);
+                flowView.notifyChanged();
+                break;
         }
         return true;
     }
@@ -143,5 +153,6 @@ public class FlowPresenterImpl implements FlowPresenter {
         FlowSharePreferenceHelper.saveString(Constants.SP_KEY_FIRE_WALL_MODE, mode);
         flowView.refreshFireModeHeader(modeText);
     }
+
 
 }

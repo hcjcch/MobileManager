@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import com.hcjcch.flowstatistics.FlowStatisticsActivity;
 import com.hcjcch.flowstatistics.flowutil.Api;
+import com.hcjcch.garbage.GarbageCleanActivity;
+import com.hcjcch.pm.ApplicationManagerActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,5 +48,15 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.network)
     void intentToFlow() {
         openActivity(FlowStatisticsActivity.class, null);
+    }
+
+    @OnClick(R.id.garbage)
+    void intentGarbage() {
+        openActivity(GarbageCleanActivity.class, null);
+    }
+
+    @OnClick(R.id.application_manager)
+    void intentToApplicationManager() {
+        openActivity(ApplicationManagerActivity.class, null);
     }
 }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hcjcch.mobilemanager">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
     <application
         android:name=".MApplication"
         android:allowBackup="true"
@@ -18,6 +21,22 @@
         </activity>
         <activity
             android:name="com.hcjcch.flowstatistics.FlowStatisticsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name="com.hcjcch.garbage.GarbageCleanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name="com.hcjcch.pm.ApplicationManagerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name="com.hcjcch.pm.AllApplicationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name="com.hcjcch.pm.AppDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme" />
     </application>

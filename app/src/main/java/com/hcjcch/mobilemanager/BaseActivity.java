@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 
 /**
@@ -54,17 +55,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
     }
 
-    protected void setToolBarTitleColor(int color) {
-        toolbar.setTitleTextColor(color);
-    }
-
     protected void setBackDrawable() {
         toolbar.setNavigationIcon(R.mipmap.ic_keyboard_backspace_white_24dp);
     }
 
-    protected void setBackDrawable(int id) {
-        toolbar.setNavigationIcon(R.mipmap.ic_keyboard_backspace_white_24dp);
-    }
 
     protected abstract void subOnCreate(@Nullable Bundle savedInstanceState);
 

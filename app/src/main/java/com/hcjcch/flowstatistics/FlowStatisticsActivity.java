@@ -129,6 +129,11 @@ public class FlowStatisticsActivity extends BaseActivity implements FlowView {
     }
 
     @Override
+    public void notifyChanged() {
+        flowAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setTitle() {
         setTitle("流量统计");
     }

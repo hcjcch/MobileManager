@@ -6,4 +6,8 @@
     <color name="white">#FFFFFF</color>
     <color name="green">#4CAF50</color>
     <color name="black">#000000</color>
+    <color name="transparent">#0FFF</color>
+    <color name="garbade_clean_stroke_color">#503F51B5</color>
+    <color name="garbage_red">#FF530D</color>
+    <color name="garbage_green">#13FF6A</color>
 </resources>
