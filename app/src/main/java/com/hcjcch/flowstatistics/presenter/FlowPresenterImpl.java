@@ -149,8 +149,8 @@ public class FlowPresenterImpl implements FlowPresenter {
 
     @Override
     public void selectFireMode(int which, String modeText) {
-        final String mode = (which == 0 ? Api.MODE_WHITE_LIST : Api.MODE_BLACK_LIST);
-        FlowSharePreferenceHelper.saveString(Constants.SP_KEY_FIRE_WALL_MODE, mode);
+        final boolean mode = (which == 0);
+        FlowSharePreferenceHelper.saveBoolean(Constants.SP_KEY_WHITE_LIST, mode);
         flowView.refreshFireModeHeader(modeText);
     }
 

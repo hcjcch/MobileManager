@@ -19,4 +19,5 @@ public class Constants {
     public static final String SP_KEY_APP_VERSION = "sp_key_app_version";
     public static final String SP_KEY_FIRE_WALL_ENABLE = "sp_key_fire_wall_enable";
     public static final String SP_KEY_FIRE_WALL_MODE = "sp_key_fire_wall_mode";
+    public static final String SP_KEY_WHITE_LIST = "sp_key_white_list";
 }

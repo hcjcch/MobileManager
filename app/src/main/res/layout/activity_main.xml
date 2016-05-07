@@ -12,19 +12,35 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/network"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@drawable/main_button_click_one_four"
+            android:gravity="center">
 
-            <Button
-                android:id="@+id/network"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:lineSpacingMultiplier="1.2"
-                android:text="流量监控"
-                android:textColor="@color/white"
-                android:textSize="25sp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_network"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/ic_network_check_white_48dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/img_network"
+                    android:layout_marginTop="10dp"
+
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="流量监控"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -33,26 +49,70 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <Button
+            <RelativeLayout
                 android:id="@+id/garbage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:clickable="true"
-                android:lineSpacingMultiplier="1.2"
-                android:text="垃圾回收"
-                android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:background="@drawable/main_button_click_two_three">
 
-            <Button
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/img_garbage_clean"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/ic_toys_white_48dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_garbage_clean"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="垃圾清理"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/application_manager"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:lineSpacingMultiplier="1.2"
-                android:textColor="@color/white"
-                android:text="应用管理"
-                android:textSize="25sp" />
+                android:background="@drawable/main_button_click_two_three">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/img_application_manager"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/ic_android_white_48dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_application_manager"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="应用管理"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

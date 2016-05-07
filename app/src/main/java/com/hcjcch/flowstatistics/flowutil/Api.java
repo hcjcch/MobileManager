@@ -28,8 +28,6 @@ import java.util.List;
 public class Api {
     private static final String TAG = "API";
     private static final String SCRIPT_FILE = "fireWall.sh";
-    public static final String MODE_WHITE_LIST = "white_list";
-    public static final String MODE_BLACK_LIST = "black_list";
     private static String CHAIN_NAME = "fire_wall";
     /**
      * special application UID used to indicate "any application"
@@ -99,9 +97,9 @@ public class Api {
         }
         script.append("# Filtering rules\n");
         //TODO 暂时只做白名单
-        boolean whiteList = true;
+        boolean whiteList = FlowSharePreferenceHelper.getBoolean(Constants.SP_KEY_WHITE_LIST, true);
         boolean blackList = !whiteList;
-        final String targetRule = "RETURN";
+        final String targetRule = (whiteList ? "RETURN" : CHAIN_NAME + "-reject");
         final List<Integer> flowUidList = AppInfoUtil.getUidListFromPref(FlowSharePreferenceHelper.getString(Constants.SP_KEY_FLOW_SELECT_UID, ""));
         final List<Integer> wifiUidList = AppInfoUtil.getUidListFromPref(FlowSharePreferenceHelper.getString(Constants.SP_KEY_WIFI_SELECT_UID, ""));
         final boolean allFlow = flowUidList.indexOf(SPECIAL_UID_ANY) >= 0;

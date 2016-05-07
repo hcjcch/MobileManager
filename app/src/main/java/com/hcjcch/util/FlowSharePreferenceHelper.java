@@ -19,6 +19,11 @@ public class FlowSharePreferenceHelper {
         return sharedPreferences.getBoolean(key, false);
     }
 
+    public static Boolean getBoolean(String key, boolean defaultValue) {
+        SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
     public static void saveBoolean(String key, Boolean value) {
         SharedPreferences sharedPreferences = MApplication.getContext().getSharedPreferences(Constants.SP_NAME_FLOW, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
